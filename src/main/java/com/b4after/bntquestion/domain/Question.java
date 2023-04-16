@@ -1,5 +1,6 @@
 package com.b4after.bntquestion.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,14 +10,12 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question {
     @Id
     @Column(name = "question_id")
     private Long id;
 
-
-    @Column(name = "image_url")
     private String imageUrl;
 
     private String word;
