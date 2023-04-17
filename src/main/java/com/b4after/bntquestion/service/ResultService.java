@@ -4,24 +4,33 @@ package com.b4after.bntquestion.service;
 import com.b4after.bntquestion.domain.Answer;
 import com.b4after.bntquestion.domain.AnswerStatus;
 import com.b4after.bntquestion.domain.Member;
-import com.b4after.bntquestion.domain.Question;
+import com.b4after.bntquestion.domain.Result;
 import com.b4after.bntquestion.repository.AnswerRepository;
+import com.b4after.bntquestion.repository.MemberRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AnswerService {
-    private final AnswerRepository answerRepository;
+public class ResultService {
 
-    @Transactional
-    public void createAnswer(Question question, Member member, String audio) {
-        Answer answer = new Answer(question, member, audio);
-        answerRepository.save(answer);
+    private final AnswerRepository answerRepository;
+    private final MemberRepository memberRepository;
+
+    public Result findResult(Long memberId) {
+        List<Answer> answers = answerRepository.findByMemberId(memberId);
+        Member member = memberRepository.findMember(memberId);
+        return new Result(member, answers);
     }
 }
+
+
+
+

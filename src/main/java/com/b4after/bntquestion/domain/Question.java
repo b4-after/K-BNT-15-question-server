@@ -19,10 +19,5 @@ public class Question {
     private String imageUrl;
 
     private String word;
-
-    public Question(Long id, String imageUrl, String word) {
-        this.id = id;
-        this.imageUrl = imageUrl;
-        this.word = word;
     }
-}
+
