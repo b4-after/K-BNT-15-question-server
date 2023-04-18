@@ -14,7 +14,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Member findMember(Long memberId) {
-        Member member = em.find(Member.class, memberId);
-        return member;
+        return em.find(Member.class, memberId);
+
     }
 }

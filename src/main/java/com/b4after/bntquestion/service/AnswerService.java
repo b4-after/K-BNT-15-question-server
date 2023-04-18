@@ -2,16 +2,13 @@ package com.b4after.bntquestion.service;
 
 
 import com.b4after.bntquestion.domain.Answer;
-import com.b4after.bntquestion.domain.AnswerStatus;
 import com.b4after.bntquestion.domain.Member;
 import com.b4after.bntquestion.domain.Question;
 import com.b4after.bntquestion.repository.AnswerRepository;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

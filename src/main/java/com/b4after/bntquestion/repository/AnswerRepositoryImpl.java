@@ -2,7 +2,6 @@ package com.b4after.bntquestion.repository;
 
 
 import com.b4after.bntquestion.domain.Answer;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class AnswerRepositoryImpl implements AnswerRepository{
     private final EntityManager em;
 

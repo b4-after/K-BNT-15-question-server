@@ -25,14 +25,27 @@ public class Answer {
     @Enumerated(EnumType.STRING)
     private AnswerStatus answerStatus;
 
-    @JoinColumn(name = "audio_url")
-    private String audio;
+    private String audioUrl;
 
-    public Answer(Question question, Member member, String audio) {
+    public boolean isGraded() {
+        return answerStatus != AnswerStatus.BEFORE;
+    }
+    public boolean isCorrect() {
+        return answerStatus == AnswerStatus.CORRECT;
+    }
+
+    public Answer(Question question, Member member, String audioUrl) {
         this.question = question;
         this.member = member;
         this.answerStatus = AnswerStatus.BEFORE;
-        this.audio = audio;
+        this.audioUrl = audioUrl;
+    }
+    //테스트를 위한 생성자 오버로드
+    public Answer(Question question, Member member, AnswerStatus answerStatus, String audioUrl) {
+        this.question = question;
+        this.member = member;
+        this.answerStatus = answerStatus;
+        this.audioUrl = audioUrl;
     }
 }
 

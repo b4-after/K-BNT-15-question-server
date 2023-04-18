@@ -2,18 +2,13 @@ package com.b4after.bntquestion.service;
 
 
 import com.b4after.bntquestion.domain.Answer;
-import com.b4after.bntquestion.domain.AnswerStatus;
 import com.b4after.bntquestion.domain.Member;
 import com.b4after.bntquestion.domain.Result;
 import com.b4after.bntquestion.repository.AnswerRepository;
 import com.b4after.bntquestion.repository.MemberRepository;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
