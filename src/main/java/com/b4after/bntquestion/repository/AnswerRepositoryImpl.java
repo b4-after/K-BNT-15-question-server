@@ -15,7 +15,7 @@ public class AnswerRepositoryImpl implements AnswerRepository{
 
     @Override
     public List<Answer> findByMemberId(Long memberId) {
-        return em.createQuery("select r from Answer r where r.member.id = :memberId", Answer.class)
+        return em.createQuery("select r from Answer r where r.memberId = :memberId", Answer.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

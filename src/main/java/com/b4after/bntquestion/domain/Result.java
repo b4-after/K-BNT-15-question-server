@@ -13,25 +13,26 @@ public class Result {
     private final int totalScore;
     private final List<GradedResult> results;
 
-    public Result(Member member, List<Answer> answers) {
+    public Result(Member member, List<Answer> answers, List<Question> questions) {
         this.averageScore = AgeAverageScore.getAverageScore(member.getAge());
         this.totalScore = calculateScore(answers);
-        this.results = makeResults(answers);
+        this.results = makeResults(answers, questions);
     }
-    private List<GradedResult> makeResults(List<Answer> answers) {
-        return answers.stream()
-                .map(answer -> new GradedResult(
-                        answer.getQuestion().getWord(),
-                        getOX(answer))
-                )
-                .collect(Collectors.toList());
-    }
-
     private int calculateScore(List<Answer> answers) {
         return (int) answers.stream()
                 .filter(Answer::isCorrect)
                 .count();
     }
+
+    private List<GradedResult> makeResults(List<Answer> answers, List<Question> questions) {
+        return answers.stream()
+                .map(answer -> new GradedResult(
+                        findQuestionWord(questions, answer.getQuestionId()),
+                        getOX(answer))
+                )
+                .collect(Collectors.toList());
+    }
+
     private char getOX(Answer answer) {
         if (!answer.isGraded()) {
             return '?';
@@ -40,6 +41,14 @@ public class Result {
             return 'O';
         }
         return 'X';
+    }
+
+    private String findQuestionWord(List<Question> questions, Long questionId) {
+        return questions.stream()
+                .filter(question -> question.getId().equals(questionId))
+                .findFirst()
+                .orElseThrow()
+                .getWord();
     }
     @Getter
     private static class GradedResult {
