@@ -47,7 +47,7 @@ public class Result {
         return questions.stream()
                 .filter(question -> question.getId().equals(questionId))
                 .findFirst()
-                .orElseThrow()
+                .orElseThrow(() -> new IllegalArgumentException("답변에 해당하는 문제를 찾을 수 없습니다."))
                 .getWord();
     }
     @Getter
