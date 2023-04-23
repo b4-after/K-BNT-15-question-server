@@ -25,7 +25,8 @@ public class ResultService {
 
     public Result findResult(Long memberId) {
         List<Answer> answers = answerRepository.findByMemberId(memberId);
-        Member member = memberRepository.findMember(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow();
         List<Question> questions = questionRepository.findAllById(extractQuestionIds(answers));
         return new Result(member, answers, questions);
     }
