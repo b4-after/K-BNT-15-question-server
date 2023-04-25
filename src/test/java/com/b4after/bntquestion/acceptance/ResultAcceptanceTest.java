@@ -3,6 +3,7 @@ package com.b4after.bntquestion.acceptance;
 
 import com.b4after.bntquestion.domain.Answer;
 import com.b4after.bntquestion.domain.AnswerStatus;
+import com.b4after.bntquestion.repository.AnswerRepository;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
@@ -10,6 +11,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -18,6 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ResultAcceptanceTest extends AcceptanceTest {
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @BeforeEach
     void executeBNT() {
@@ -62,7 +67,7 @@ class ResultAcceptanceTest extends AcceptanceTest {
 
                 () -> assertThat(questionWords).containsExactly(
                         "용", "올챙이", "거미줄", "눈사람", "장화",
-                        "거북선", "고드름", "낙", "골무", "소화기",
+                        "거북선", "고드름", "낙타", "골무", "소화기",
                         "인어", "공룡", "유모차", "토시", "불가사리"
                 ),
                 () -> assertThat(isCorrects).containsExactly(
