@@ -1,8 +1,11 @@
 package com.b4after.bntquestion.service;
 
 
-import com.b4after.bntquestion.domain.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.b4after.bntquestion.domain.Answer;
+import com.b4after.bntquestion.domain.AnswerStatus;
+import com.b4after.bntquestion.domain.Member;
+import com.b4after.bntquestion.domain.Question;
+import com.b4after.bntquestion.dto.BntResultResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +27,7 @@ class ResultServiceTest {
     private EntityManager em;
 
     @Test
-    void getResultTest() throws JsonProcessingException {
+    void getResultTest() {
         // given
         Member member = new Member(58);
         em.persist(member);
@@ -39,11 +42,10 @@ class ResultServiceTest {
         em.persist(answer2);
 
         // when
-        Result result = resultService.findResult(1L);
+        BntResultResponse result = resultService.findResult(1L);
 
         // then
 
         assertThat(result.getTotalScore()).isEqualTo(1);
     }
-
 }

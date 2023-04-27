@@ -4,7 +4,8 @@ package com.b4after.bntquestion.service;
 import com.b4after.bntquestion.domain.Answer;
 import com.b4after.bntquestion.domain.Member;
 import com.b4after.bntquestion.domain.Question;
-import com.b4after.bntquestion.domain.Result;
+import com.b4after.bntquestion.dto.BntResultResponse;
+import com.b4after.bntquestion.dto.BntResultResponseMapper;
 import com.b4after.bntquestion.exception.BusinessException;
 import com.b4after.bntquestion.repository.AnswerRepository;
 import com.b4after.bntquestion.repository.MemberRepository;
@@ -24,12 +25,12 @@ public class ResultService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
 
-    public Result findResult(Long memberId) {
+    public BntResultResponse findResult(Long memberId) {
         List<Answer> answers = answerRepository.findByMemberId(memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException("검사를 진행한 사용자 ID가 아닙니다."));
         List<Question> questions = questionRepository.findAllById(extractQuestionIds(answers));
-        return new Result(member, answers, questions);
+        return BntResultResponseMapper.toDto(member, questions, answers);
     }
 
     private List<Long> extractQuestionIds(List<Answer> answers) {
