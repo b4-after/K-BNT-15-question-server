@@ -1,8 +1,6 @@
 package com.b4after.bntquestion.service;
 
 
-import com.b4after.bntquestion.domain.Member;
-import com.b4after.bntquestion.domain.Question;
 import com.b4after.bntquestion.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,7 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
 
     @Transactional
-    public void createAnswer(Question question, Member member, String audio) {
+    public void createAnswer(Long questionId, Long memberId, String audio) {
         // todo
     }
 }
