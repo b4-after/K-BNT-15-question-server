@@ -20,7 +20,7 @@ public enum AgeAverageScore {
         AgeAverageScore ageAverage = Arrays.stream(AgeAverageScore.values())
                 .filter(range -> age >= range.minAge && age <= range.maxAge)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("범위 밖입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("나이가 평균 점수를 구할 수 있는 범위 밖입니다."));
         return ageAverage.getAverage();
     }
 }

@@ -1,14 +1,19 @@
 package com.b4after.bntquestion.service;
 
 
-import com.b4after.bntquestion.domain.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.assertj.core.api.Assertions;
+import com.b4after.bntquestion.domain.Answer;
+import com.b4after.bntquestion.domain.AnswerStatus;
+import com.b4after.bntquestion.domain.Member;
+import com.b4after.bntquestion.domain.Question;
+import com.b4after.bntquestion.dto.BntResultResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
@@ -16,13 +21,14 @@ import javax.persistence.EntityManager;
 class ResultServiceTest {
 
     @Autowired
-    ResultService resultService;
+    private ResultService resultService;
 
     @Autowired
     private EntityManager em;
 
     @Test
-    void getResultTest() throws JsonProcessingException {
+    void getResultTest() {
+        // given
         Member member = new Member(58);
         em.persist(member);
         Question question1 = new Question(1L, "imageUrl.com", "사탕");
@@ -30,14 +36,16 @@ class ResultServiceTest {
         em.persist(question1);
         em.persist(question2);
 
-        Answer answer1 = new Answer(question1, member, AnswerStatus.CORRECT, "Audio.com");
-        Answer answer2 = new Answer(question1, member, AnswerStatus.INCORRECT, "Audio.com");
+        Answer answer1 = new Answer(1L, 1L, "Audio.com", AnswerStatus.CORRECT);
+        Answer answer2 = new Answer(2L, 1L, "Audio.com", AnswerStatus.INCORRECT);
         em.persist(answer1);
         em.persist(answer2);
 
-        Result result = resultService.findResult(1L);
+        // when
+        BntResultResponse result = resultService.findResult(1L);
 
-        Assertions.assertThat(result.getTotalScore()).isEqualTo(1);
+        // then
+
+        assertThat(result.getTotalScore()).isEqualTo(1);
     }
-
 }
