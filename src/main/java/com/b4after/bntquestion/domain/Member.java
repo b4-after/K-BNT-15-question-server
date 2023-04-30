@@ -1,6 +1,5 @@
 package com.b4after.bntquestion.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,7 @@ public class Member {
     private Long id;
 
     private int age;
-    @JsonProperty("createdAt")
+
     private LocalDateTime createdAt;
 
     public Member(int age) {
