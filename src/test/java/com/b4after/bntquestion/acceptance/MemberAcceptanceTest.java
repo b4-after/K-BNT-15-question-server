@@ -19,6 +19,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void createMember() {
         // given
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest();
+        memberCreateRequest.setAge(56);
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -27,11 +28,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .post("/members/")
                 .then().log().all()
                 .extract();
-
         // then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.headers().get("Location")).isNotNull()
         );
-
     }
 }

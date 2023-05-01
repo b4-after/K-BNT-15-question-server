@@ -3,14 +3,16 @@ package com.b4after.bntquestion.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+@EntityListeners(AuditingEntityListener.class)
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -18,13 +20,8 @@ public class Member {
 
     private int age;
 
-    private LocalDateTime createdAt;
-
     public Member(int age) {
         this.age = age;
-        this.createdAt = LocalDateTime.now();
     }
-
-
 }
 
