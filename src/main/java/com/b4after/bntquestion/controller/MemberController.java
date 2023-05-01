@@ -1,6 +1,7 @@
 package com.b4after.bntquestion.controller;
 
 import com.b4after.bntquestion.domain.Member;
+import com.b4after.bntquestion.dto.MemberCreateRequest;
 import com.b4after.bntquestion.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/members/")
-    public ResponseEntity<Member> saveMember(@RequestBody Member member) {
-        memberService.saveMember(member);
+    public ResponseEntity<Member> saveMember(@RequestBody MemberCreateRequest memberCreateRequest) {
+        memberService.saveMember(memberCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/members/{memberId}")
-    public ResponseEntity<Member> getMember(@PathVariable Long memberId) {
-        Member member = memberService.findMember(memberId);
-        return ResponseEntity.ok().body(member);
     }
 }

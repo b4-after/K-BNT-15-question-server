@@ -1,6 +1,7 @@
 package com.b4after.bntquestion.service;
 
 import com.b4after.bntquestion.domain.Member;
+import com.b4after.bntquestion.dto.MemberCreateRequest;
 import com.b4after.bntquestion.exception.BusinessException;
 import com.b4after.bntquestion.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
-    public void saveMember(Member member) {
+    @Transactional
+    public void saveMember(MemberCreateRequest memberCreateRequest) {
+        Member member = new Member(memberCreateRequest.getAge());
         memberRepository.save(member);
-    }
-
-    public Member findMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException("해당 사용자는 존재하지 않습니다."));
     }
 }
