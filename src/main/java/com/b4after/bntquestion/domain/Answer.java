@@ -23,7 +23,7 @@ public class Answer {
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 8, nullable = false)
+    @Column(length = 10, nullable = false)
     private AnswerStatus answerStatus;
 
     @Embedded

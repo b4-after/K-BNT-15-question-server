@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleUnexpectException(Exception exception) {
+        exception.printStackTrace();
         return ResponseEntity.internalServerError()
                 .body("예상하지 못한 서버 에러 발생");
     }
