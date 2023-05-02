@@ -31,7 +31,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
-                () -> assertThat(response.headers().get("Location")).isNotNull()
+                () -> assertThat(response.headers().get("Location").getValue()).isEqualTo("/members/2")
         );
     }
 }

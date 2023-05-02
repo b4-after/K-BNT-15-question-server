@@ -4,10 +4,11 @@ import com.b4after.bntquestion.domain.Member;
 import com.b4after.bntquestion.dto.MemberCreateRequest;
 import com.b4after.bntquestion.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +18,8 @@ public class MemberController {
 
     @PostMapping("/members/")
     public ResponseEntity<Member> saveMember(@RequestBody MemberCreateRequest memberCreateRequest) {
-        HttpHeaders httpHeaders = memberService.saveMember(memberCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).build();
+        Long memberId = memberService.saveMember(memberCreateRequest);
+        return ResponseEntity.created(URI.create("/members/" + memberId))
+                .build();
     }
 }
