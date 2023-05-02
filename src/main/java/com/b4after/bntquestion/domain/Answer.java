@@ -21,19 +21,17 @@ public class Answer {
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 8)
     private AnswerStatus answerStatus;
 
-    private String audioUrl;
+    @Column(length = 64)
+    private String audioFileObjectKey;
 
-    public Answer(Long questionId, Long memberId, String audioUrl) {
-        this(questionId, memberId, audioUrl, AnswerStatus.BEFORE);
-    }
-
-    public Answer(Long questionId, Long memberId, String audioUrl, AnswerStatus answerStatus) {
+    public Answer(Long questionId, Long memberId, String audioFileObjectKey, AnswerStatus answerStatus) {
         this.questionId = questionId;
         this.memberId = memberId;
         this.answerStatus = answerStatus;
-        this.audioUrl = audioUrl;
+        this.audioFileObjectKey = audioFileObjectKey;
     }
 
     public boolean isGraded() {
