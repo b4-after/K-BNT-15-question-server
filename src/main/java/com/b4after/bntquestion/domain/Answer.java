@@ -16,22 +16,32 @@ public class Answer {
     @Column(name = "answer_id")
     private Long id;
 
+    @Column(nullable = false)
     private Long questionId;
 
+    @Column(nullable = false)
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 8, nullable = false)
     private AnswerStatus answerStatus;
 
-    @Column(length = 64)
-    private String audioFileObjectKey;
+    @Embedded
+    private AnswerAudio answerAudio;
 
-    public Answer(Long questionId, Long memberId, String audioFileObjectKey, AnswerStatus answerStatus) {
+    public static Answer createBeforeGrading(Long questionId, Long memberId, AnswerAudio answerAudio) {
+        return new Answer(questionId, memberId, answerAudio, AnswerStatus.BEFORE);
+    }
+
+    private Answer(Long questionId, Long memberId, AnswerAudio answerAudio, AnswerStatus answerStatus) {
         this.questionId = questionId;
         this.memberId = memberId;
         this.answerStatus = answerStatus;
-        this.audioFileObjectKey = audioFileObjectKey;
+        this.answerAudio = answerAudio;
+    }
+
+    public Answer(Long questionId, Long memberId, String audioFileObjectKey, AnswerStatus answerStatus) {
+        this(questionId, memberId, new AnswerAudio(audioFileObjectKey), answerStatus);
     }
 
     public boolean isGraded() {
