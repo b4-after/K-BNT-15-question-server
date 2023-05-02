@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(indexes = @Index(name = "idx_member", columnList = "memberId"))
+@Table(
+        indexes = @Index(name = "idx_member", columnList = "memberId"),
+        uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_answer", columnNames = "audioFileObjectKey")}
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Answer {
