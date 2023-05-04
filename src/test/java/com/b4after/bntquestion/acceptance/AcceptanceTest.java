@@ -9,6 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 
@@ -28,8 +30,8 @@ class AcceptanceTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-
+        String objectKey = UUID.randomUUID().toString();
         given(answerAudioUploader.upload(any()))
-                .willReturn(new AnswerAudio("mock-audio-file-object-key"));
+                .willReturn(new AnswerAudio(objectKey));
     }
 }
