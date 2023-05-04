@@ -27,21 +27,21 @@ class ResultAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void executeBNT() {
         answerRepository.saveAll(List.of(
-                new Answer(1L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(2L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(3L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(4L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(5L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(6L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(7L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(8L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(9L, memberId, "audio.com", AnswerStatus.CORRECT),
-                new Answer(10L, memberId, "audio.com", AnswerStatus.INCORRECT),
-                new Answer(11L, memberId, "audio.com", AnswerStatus.INCORRECT),
-                new Answer(12L, memberId, "audio.com", AnswerStatus.INCORRECT),
-                new Answer(13L, memberId, "audio.com", AnswerStatus.INCORRECT),
-                new Answer(14L, memberId, "audio.com", AnswerStatus.INCORRECT),
-                new Answer(15L, memberId, "audio.com", AnswerStatus.INCORRECT)
+                new Answer(1L, memberId, "audio1.com", AnswerStatus.CORRECT),
+                new Answer(2L, memberId, "audio2.com", AnswerStatus.CORRECT),
+                new Answer(3L, memberId, "audio3.com", AnswerStatus.CORRECT),
+                new Answer(4L, memberId, "audio4.com", AnswerStatus.CORRECT),
+                new Answer(5L, memberId, "audio5.com", AnswerStatus.CORRECT),
+                new Answer(6L, memberId, "audio6.com", AnswerStatus.CORRECT),
+                new Answer(7L, memberId, "audio7.com", AnswerStatus.CORRECT),
+                new Answer(8L, memberId, "audio8.com", AnswerStatus.CORRECT),
+                new Answer(9L, memberId, "audio9.com", AnswerStatus.CORRECT),
+                new Answer(10L, memberId, "audio10.com", AnswerStatus.INCORRECT),
+                new Answer(11L, memberId, "audio11.com", AnswerStatus.INCORRECT),
+                new Answer(12L, memberId, "audio12.com", AnswerStatus.INCORRECT),
+                new Answer(13L, memberId, "audio13.com", AnswerStatus.INCORRECT),
+                new Answer(14L, memberId, "audio14.com", AnswerStatus.INCORRECT),
+                new Answer(15L, memberId, "audio15.com", AnswerStatus.INCORRECT)
         ));
     }
 
