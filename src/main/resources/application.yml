@@ -3,6 +3,12 @@ spring:
     active: local
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    version: 1
 cloud:
   aws:
     region:
@@ -28,9 +34,6 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        hbm2ddl:
-          auto:
-            auto: create
 
 logging:
   level:
@@ -47,9 +50,6 @@ spring:
     url: ${RDS-URL}
     username: ${RDS-USERNAME}
     password: ${RDS-PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: none
 
 logging:
   level:

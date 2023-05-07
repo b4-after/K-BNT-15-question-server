@@ -7,10 +7,12 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        hbm2ddl:
-          auto:
-            auto: create
+        ddl-auto: none
     open-in-view: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    version: 1
 
 cloud:
   aws:
