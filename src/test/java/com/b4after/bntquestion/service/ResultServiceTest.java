@@ -9,6 +9,7 @@ import com.b4after.bntquestion.dto.BntResultResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,9 @@ class ResultServiceTest {
     @Autowired
     private EntityManager em;
 
+    @MockBean
+    private AnswerAudioUploader answerAudioUploader;
+
     @Test
     void getResultTest() {
         // given
@@ -36,8 +40,8 @@ class ResultServiceTest {
         em.persist(question1);
         em.persist(question2);
 
-        Answer answer1 = new Answer(1L, 1L, "Audio.com", AnswerStatus.CORRECT);
-        Answer answer2 = new Answer(2L, 1L, "Audio.com", AnswerStatus.INCORRECT);
+        Answer answer1 = new Answer(1L, 1L, "Audio1.com", AnswerStatus.CORRECT);
+        Answer answer2 = new Answer(2L, 1L, "Audio2.com", AnswerStatus.INCORRECT);
         em.persist(answer1);
         em.persist(answer2);
 

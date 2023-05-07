@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(indexes = @Index(name = "idx_member", columnList = "memberId"))
+@Table(
+        indexes = @Index(name = "idx_member", columnList = "memberId"),
+        uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_answer", columnNames = "audioFileObjectKey")}
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Answer {
@@ -16,24 +19,32 @@ public class Answer {
     @Column(name = "answer_id")
     private Long id;
 
+    @Column(nullable = false)
     private Long questionId;
 
+    @Column(nullable = false)
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
     private AnswerStatus answerStatus;
 
-    private String audioUrl;
+    @Embedded
+    private AnswerAudio answerAudio;
 
-    public Answer(Long questionId, Long memberId, String audioUrl) {
-        this(questionId, memberId, audioUrl, AnswerStatus.BEFORE);
+    public static Answer createBeforeGrading(Long questionId, Long memberId, AnswerAudio answerAudio) {
+        return new Answer(questionId, memberId, answerAudio, AnswerStatus.BEFORE);
     }
 
-    public Answer(Long questionId, Long memberId, String audioUrl, AnswerStatus answerStatus) {
+    private Answer(Long questionId, Long memberId, AnswerAudio answerAudio, AnswerStatus answerStatus) {
         this.questionId = questionId;
         this.memberId = memberId;
         this.answerStatus = answerStatus;
-        this.audioUrl = audioUrl;
+        this.answerAudio = answerAudio;
+    }
+
+    public Answer(Long questionId, Long memberId, String audioFileObjectKey, AnswerStatus answerStatus) {
+        this(questionId, memberId, new AnswerAudio(audioFileObjectKey), answerStatus);
     }
 
     public boolean isGraded() {
