@@ -17,8 +17,10 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
+    @Column(nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
     private String word;
 
     public Question(Long id, String imageUrl, String word) {

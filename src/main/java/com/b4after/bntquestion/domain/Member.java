@@ -16,6 +16,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Column(nullable = false)
     private int age;
 
     public Member(int age) {
