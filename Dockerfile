@@ -5,7 +5,7 @@ WORKDIR $HOME
 COPY gradlew build.gradle settings.gradle $HOME/
 COPY gradle/ $HOME/gradle/
 RUN chmod +x gradlew
-RUN ./gradlew build -x test --debug
+RUN ./gradlew build -x test
 
 COPY src/ $HOME/src/
 RUN ./gradlew clean build -x test
