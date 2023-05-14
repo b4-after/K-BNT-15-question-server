@@ -56,8 +56,8 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        envsubst < ./kubernetes/secret.yaml | kubectl apply -f -  
-    
+        envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
+
     - name: Deploy to AWS EKS - 2
       env:
         INSTANCE_VERSION: ${{ github.sha }}
@@ -75,7 +75,7 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/external-dns.yaml | kubectl apply -f -
 
     - name: Deploy to AWS EKS - 3
       env:
@@ -94,7 +94,7 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        envsubst < ./kubernetes/external-dns.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/secret.yaml | kubectl apply -f -  
 
     - name: Deploy to AWS EKS - 4
       env:
@@ -114,7 +114,6 @@ jobs:
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
         envsubst < ./kubernetes/deployment.yaml | kubectl apply -f -
-        envsubst < ./kubernetes/service.yaml | kubectl apply -f -
 
     - name: Deploy to AWS EKS - 5
       env:
@@ -133,6 +132,4 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        envsubst < ./kubernetes/deployment.yaml | kubectl apply -f -
         envsubst < ./kubernetes/service.yaml | kubectl apply -f -
-        
