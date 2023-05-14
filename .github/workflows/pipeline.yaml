@@ -39,7 +39,7 @@ jobs:
     - name: Update kubeconfig
       run: aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }} --region ${{ secrets.AWS_REGION }} 
     
-    - name: Deploy to AWS EKS
+    - name: Deploy to AWS EKS - 1
       env:
         INSTANCE_VERSION: ${{ github.sha }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -56,8 +56,83 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        envsubst < ./kubernetes/secret.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/secret.yaml | kubectl apply -f -  
+    
+    - name: Deploy to AWS EKS - 2
+      env:
+        INSTANCE_VERSION: ${{ github.sha }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_USER_NAME: ${{ secrets.AWS_USER_NAME }} 
+        AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
+        AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
+        AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
+        AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}      
+        AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
+        AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+      run: |
         envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
+
+    - name: Deploy to AWS EKS - 3
+      env:
+        INSTANCE_VERSION: ${{ github.sha }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_USER_NAME: ${{ secrets.AWS_USER_NAME }} 
+        AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
+        AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
+        AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
+        AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}      
+        AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
+        AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+      run: |
         envsubst < ./kubernetes/external-dns.yaml | kubectl apply -f -
+
+    - name: Deploy to AWS EKS - 4
+      env:
+        INSTANCE_VERSION: ${{ github.sha }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_USER_NAME: ${{ secrets.AWS_USER_NAME }} 
+        AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
+        AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
+        AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
+        AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}      
+        AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
+        AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+      run: |
         envsubst < ./kubernetes/deployment.yaml | kubectl apply -f -
-        envsubst < ./kubernetes/service.yaml | kubectl apply -f -         
+        envsubst < ./kubernetes/service.yaml | kubectl apply -f -
+
+    - name: Deploy to AWS EKS - 5
+      env:
+        INSTANCE_VERSION: ${{ github.sha }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_USER_NAME: ${{ secrets.AWS_USER_NAME }} 
+        AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
+        AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
+        AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
+        AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}      
+        AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
+        AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+      run: |
+        envsubst < ./kubernetes/deployment.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/service.yaml | kubectl apply -f -
+        
