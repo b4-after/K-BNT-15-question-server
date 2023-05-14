@@ -58,5 +58,5 @@ jobs:
       run: |
         kubectl config current-context
         ls -l ~/.kube
-        cat -l ~/.kube/config
+        cat ~/.kube/config
         envsubst < kubernetes.yaml | kubectl apply -f - 
