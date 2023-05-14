@@ -1,0 +1,58 @@
+name: Deploy Spring Boot server as a containter to AWS EKS
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: AWS
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      id: install
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        AWS_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+          docker build -t $AWS_ECR_REGISTRY/${{ secrets.AWS_ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker push $AWS_ECR_REGISTRY/${{ secrets.AWS_ECR_REPOSITORY }}:$IMAGE_TAG
+
+    - name: Choose a cluster by name
+      run: aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }}
+    
+    - name: Deploy to AWS EKS
+      env:
+        INSTANCE_VERSION: ${{ github.sha }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
+        AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
+        AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
+        AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}      
+        AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
+        AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+      run: |
+        envsubst < kubernetes.yaml | kubectl apply -f - 

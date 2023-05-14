@@ -1,0 +1,189 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secrets   
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend
+type: Opaque
+data:
+  AWS_REGION: $AWS_REGION
+  AWS_S3_BUCKET_NAME: $AWS_S3_BUCKET_NAME
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_RDS_URL: $AWS_RDS_URL
+  AWS_RDS_USERNAME: $AWS_RDS_USERNAME
+  AWS_RDS_PASSWORD: $AWS_RDS_PASSWORD
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k-bnt-15
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::$AWS_ACCOUNT_ID:role/$AWS_IAM_SERVICE_ROLE_NAME
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k-bnt-15
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend  
+rules:
+- apiGroups: [""]
+  resources: ["services","endpoints","pods"]
+  verbs: ["get","watch","list"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list","watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k-bnt-15
+subjects:
+- kind: ServiceAccount
+  name: k-bnt-15
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k-bnt-15
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend
+spec:
+  selector:
+    matchLabels:
+      app: k-bnt-15
+  replicas: 3      
+  template:
+    metadata:
+      labels:
+        app: k-bnt-15
+    spec:
+      serviceAccountName: k-bnt-15
+      containers:
+        - name: k-bnt-15
+          image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPOSITORY:latest
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi            
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20            
+          env:
+          - name: AWS_REGION
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_REGION
+          - name: AWS_S3_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_S3_BUCKET_NAME
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_RDS_URL
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_URL
+          - name: AWS_RDS_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_USERNAME
+          - name: AWS_RDS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_PASSWORD 
+          args:
+          - --source=service
+          - --source=ingress
+          - --domain-filter=api.bnt-15.kr
+          - --provider=aws
+          - --policy=upsert-only
+          - --aws-zone-type=public
+          - --registry=txt
+          - --txt-owner-id=my-identifier                                                           
+          securityContext:
+            fsGroup: 65534
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k-bnt-15
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: api.bnt-15.kr
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:$AWS_CM_REGION:$AWS_ACCOUNT_ID:certificate/$AWS_CM_ID
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https    
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend
+spec:
+  selector:
+    app: k-bnt-15
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 8080

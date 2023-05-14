@@ -12,12 +12,12 @@ spring:
 cloud:
   aws:
     region:
-      static: ap-northeast-2
+      static: ${AWS_REGION}
     s3:
-      bucket: k-bnt-15-files
+      bucket: ${AWS_S3_BUCKET_NAME}
     credentials:
-      access-key: ${S3-ACCESS-KEY}
-      secret-key: ${S3-SECRET-KEY}
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
     stack:
       auto: false
 
@@ -39,17 +39,17 @@ logging:
   level:
     org:
       hibernate.sql: debug
----
 
+---
 spring:
   config:
     activate:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${RDS-URL}
-    username: ${RDS-USERNAME}
-    password: ${RDS-PASSWORD}
+    url: ${AWS_RDS_URL}
+    username: ${AWS_RDS_USERNAME}
+    password: ${AWS_RDS_PASSWORD}
 
 logging:
   level:
