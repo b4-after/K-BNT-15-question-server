@@ -37,7 +37,7 @@ jobs:
           docker push $AWS_ECR_REGISTRY/${{ secrets.AWS_ECR_REPOSITORY }}:$IMAGE_TAG
 
     - name: Choose a cluster by name
-      run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }}
+      run: aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }} --region ${{ secrets.AWS_REGION }} 
     
     - name: Deploy to AWS EKS
       env:
