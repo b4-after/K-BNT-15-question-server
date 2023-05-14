@@ -8,6 +8,10 @@ group = 'com.b4after'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+bootJar {
+	mainClass = 'com.b4after.bntquestion'
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
