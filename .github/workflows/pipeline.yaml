@@ -57,4 +57,6 @@ jobs:
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
         kubectl config current-context
+        ls -l ~/.kube
+        cat -l ~/.kube/config
         envsubst < kubernetes.yaml | kubectl apply -f - 
