@@ -56,7 +56,8 @@ jobs:
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
       run: |
-        kubectl config current-context
-        ls -l ~/.kube
-        cat ~/.kube/config
-        envsubst < kubernetes.yaml | kubectl apply -f - 
+        envsubst < ./kubernetes/secret.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/external-dns.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/deployment.yaml | kubectl apply -f -
+        envsubst < ./kubernetes/service.yaml | kubectl apply -f -         

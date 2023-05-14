@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k-bnt-15
+  labels:
+    app.kubernetes.io/name: k-bnt-15
+    app.kubernetes.io/instance: k-bnt-15-$INSTANCE_VERSION
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: GitHub-Actions
+    app.kubernetes.io/component: backend
+spec:
+  selector:
+    matchLabels:
+      app: k-bnt-15
+  replicas: 3      
+  template:
+    metadata:
+      labels:
+        app: k-bnt-15
+    spec:
+      serviceAccountName: k-bnt-15
+      containers:
+        - name: k-bnt-15
+          image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPOSITORY:latest
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi            
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20            
+          env:
+          - name: AWS_REGION
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_REGION
+          - name: AWS_S3_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_S3_BUCKET_NAME
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_RDS_URL
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_URL
+          - name: AWS_RDS_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_USERNAME
+          - name: AWS_RDS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: AWS_RDS_PASSWORD 
+          args:
+          - --source=service
+          - --source=ingress
+          - --domain-filter=api.bnt-15.kr
+          - --provider=aws
+          - --policy=upsert-only
+          - --aws-zone-type=public
+          - --registry=txt
+          - --txt-owner-id=my-identifier                                                           
+          securityContext:
+            fsGroup: 65534
