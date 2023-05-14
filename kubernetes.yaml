@@ -16,20 +16,7 @@ data:
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   AWS_RDS_URL: $AWS_RDS_URL
   AWS_RDS_USERNAME: $AWS_RDS_USERNAME
-  AWS_RDS_PASSWORD: $AWS_RDS_PASSWORD
-
----
-apiVersion: v1 
-kind: ConfigMap 
-metadata: 
-  name: aws-auth 
-  namespace: kube-system 
-data: 
-  mapUsers: | 
-    - groups:
-      - system:masters
-      userarn: arn:aws:iam::$AWS_ACCOUNT_ID:user/$AWS_USER_NAME
-      username: $AWS_USER_NAME     
+  AWS_RDS_PASSWORD: $AWS_RDS_PASSWORD 
 
 ---
 apiVersion: v1
@@ -76,6 +63,25 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: k-bnt-15
+
+---
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: aws-auth 
+  namespace: kube-system 
+data: 
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::$AWS_ACCOUNT_ID:role/$AWS_IAM_SERVICE_ROLE_NAME
+      username: $AWS_IAM_SERVICE_ROLE_NAME
+  mapUsers: | 
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::$AWS_ACCOUNT_ID:user/$AWS_USER_NAME
+      username: $AWS_USER_NAME    
 
 ---
 apiVersion: apps/v1
