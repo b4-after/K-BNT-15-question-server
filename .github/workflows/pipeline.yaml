@@ -37,7 +37,7 @@ jobs:
           docker push $AWS_ECR_REGISTRY/${{ secrets.AWS_ECR_REPOSITORY }}:$IMAGE_TAG
 
     - name: Choose a cluster by name
-      run: aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }}
+      run: aws eks -region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.AWS_EKS_NAME }}
     
     - name: Deploy to AWS EKS
       env:
@@ -46,6 +46,7 @@ jobs:
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_USER_NAME: ${{ secrets.AWS_USER_NAME }} 
         AWS_IAM_SERVICE_ROLE_NAME: ${{ secrets.AWS_IAM_SERVICE_ROLE_NAME }}
         AWS_CM_REGION: ${{ secrets.AWS_CM_REGION }}
         AWS_CM_ID: ${{ secrets.AWS_CM_ID }}
