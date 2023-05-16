@@ -45,6 +45,8 @@ spring:
   config:
     activate:
       on-profile: prod
+    import:
+      - classpath:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${AWS_RDS_URL}
