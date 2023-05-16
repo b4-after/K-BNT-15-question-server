@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: local
   jpa:
     open-in-view: false
     hibernate:
@@ -8,7 +8,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-#    version: 1
+    version: 1
 #cloud:
 #  aws:
 #    region:

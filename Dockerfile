@@ -17,4 +17,4 @@ ARG JAR_FILE_PATH=build/libs/bnt-question-0.0.1-SNAPSHOT.jar
 
 WORKDIR $HOME
 COPY --from=builder $HOME/$JAR_FILE_PATH $ARTIFACT_NAME
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
