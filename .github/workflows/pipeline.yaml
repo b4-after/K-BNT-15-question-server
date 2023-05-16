@@ -37,9 +37,11 @@ jobs:
           docker push $AWS_ECR_REGISTRY/${{ secrets.AWS_ECR_REPOSITORY }}:$IMAGE_TAG
     
     - name: Update kubeconfig
-      run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.AWS_EKS_NAME }}
+      run: |
+        aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.AWS_EKS_NAME }}
+        envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
 
-    - name: Deploy to AWS EKS - 1
+    # - name: Deploy to AWS EKS - 1
       env:
         INSTANCE_VERSION: ${{ github.sha }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -55,8 +57,8 @@ jobs:
         AWS_RDS_USERNAME: ${{ secrets.AWS_RDS_USERNAME }}  
         AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
         AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
-      run: |
-        envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
+      # run: |
+      #  envsubst < ./kubernetes/aws-auth.yaml | kubectl apply -f -
 
     - name: Deploy to AWS EKS - 2
       env:
