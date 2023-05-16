@@ -49,6 +49,6 @@ public class S3AnswerAudioUploader implements AnswerAudioUploader {
     }
 
     private String createFileObjectKey(MultipartFile audioFile) {
-        return UUID.randomUUID() + "." + FileUtils.extractExtension(audioFile);
+        return "audio/" + UUID.randomUUID() + "." + FileUtils.extractExtension(audioFile);
     }
 }
