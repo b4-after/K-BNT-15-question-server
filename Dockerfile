@@ -19,6 +19,9 @@
 #COPY --from=builder $HOME/$JAR_FILE_PATH $ARTIFACT_NAME
 #ENTRYPOINT ["java", "-jar", "app.jar"]
 FROM openjdk:11-jdk
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+WORKDIR /home/spring
+
+COPY build/libs/*.jar /home/spring/app.jar
+
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/home/spring/app.jar"]
