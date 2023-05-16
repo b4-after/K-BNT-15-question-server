@@ -46,7 +46,7 @@ spring:
     activate:
       on-profile: prod
     import:
-      - classpath:resources/be-config/application.yml
+      - classpath:be-config/application.yml
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: ${AWS_RDS_URL}
