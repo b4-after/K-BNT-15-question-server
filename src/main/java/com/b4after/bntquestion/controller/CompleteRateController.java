@@ -21,7 +21,7 @@ public class CompleteRateController {
 
     @Data
     @AllArgsConstructor
-    static class RateResponse {
+    static private class RateResponse {
         private double completeRate;
     }
 }

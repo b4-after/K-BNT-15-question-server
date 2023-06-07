@@ -55,10 +55,8 @@ public class completeRateAcceptanceTest extends AcceptanceTest{
                 .then().log().all()
                 .extract();
         JsonPath json = response.jsonPath();
-        System.out.println("json = " + json);
-        assertThat(json.getDouble("completeRate")).isEqualTo(50.0);
         // then
-
+        assertThat(json.getDouble("completeRate")).isEqualTo(50.0);
     }
 }
 
