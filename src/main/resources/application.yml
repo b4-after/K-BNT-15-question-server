@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: prod
   jpa:
     open-in-view: false
     hibernate:
@@ -9,17 +9,17 @@ spring:
     enabled: true
     baseline-on-migrate: true
     version: 1
-cloud:
-  aws:
-    region:
-      static: ${AWS_REGION}
-    s3:
-      bucket: ${AWS_S3_BUCKET_NAME}
-    credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
-    stack:
-      auto: false
+#cloud:
+#  aws:
+#    region:
+#      static: ${AWS_REGION}
+#    s3:
+#      bucket: ${AWS_S3_BUCKET_NAME}
+#    credentials:
+#      access-key: ${AWS_ACCESS_KEY_ID}
+#      secret-key: ${AWS_SECRET_ACCESS_KEY}
+#    stack:
+#      auto: false
 
 ---
 spring:
@@ -45,11 +45,13 @@ spring:
   config:
     activate:
       on-profile: prod
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${AWS_RDS_URL}
-    username: ${AWS_RDS_USERNAME}
-    password: ${AWS_RDS_PASSWORD}
+    import:
+      - classpath:be-config/application.yml
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: ${AWS_RDS_URL}
+#    username: ${AWS_RDS_USERNAME}
+#    password: ${AWS_RDS_PASSWORD}
 
 logging:
   level:
